@@ -1,12 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-import Camera from './Camera';
+import FaceMonitor from './FaceMonitor';
 
 function App() {
 
   return (
     <div className="App">
-      <Camera/>
+      <FaceMonitor/>
     </div>
   );
 }
