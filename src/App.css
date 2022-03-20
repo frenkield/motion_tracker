@@ -1,3 +1,17 @@
+#camera {
+  width: 400px;
+  height: 300px;
+  background-color: blue;
+}
+
+#output {
+  width: 400px;
+  height: 300px;
+  background-color: green;
+}
+
+
+
 .App {
   text-align: center;
 }
