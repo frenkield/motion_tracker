@@ -14,6 +14,7 @@ export default class FaceMonitor extends React.Component {
     this.canvasRef = React.createRef()
 
     this.initializeFaceMesh()
+    this.running = false
   }
 
   initializeFaceMesh() {
@@ -50,6 +51,22 @@ export default class FaceMonitor extends React.Component {
   }
 
   onResults = (results) => {
+
+    if (!this.running) {
+      this.running = true
+      this.startTime = Date.now()
+      this.resultsCount = 0
+    }
+
+    this.resultsCount++
+    const currentTime = Date.now()
+    const elapsedTime = currentTime - this.startTime
+
+    if (elapsedTime > 1000) {
+      console.log(this.resultsCount / elapsedTime * 1000)
+      this.startTime = currentTime
+      this.resultsCount = 0
+    }
 
     this.canvasCtx.save();
     this.canvasCtx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
