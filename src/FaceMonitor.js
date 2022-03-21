@@ -1,39 +1,42 @@
 import React from "react"
 
-import {FaceMesh, VERSION} from "@mediapipe/face_mesh"
-import {Camera} from '@mediapipe/camera_utils'
+import { FaceMesh, VERSION, FACEMESH_RIGHT_EYE, FACEMESH_LEFT_EYE } from "@mediapipe/face_mesh"
+import { Camera } from "@mediapipe/camera_utils"
+import { drawConnectors } from "@mediapipe/drawing_utils"
 
 export default class FaceMonitor extends React.Component {
 
   constructor(props) {
 
-    super(props);
-    this.cameraRef = React.createRef();
-    this.outputRef = React.createRef();
+    super(props)
 
+    this.cameraRef = React.createRef()
+    this.canvasRef = React.createRef()
 
+    this.initializeFaceMesh()
   }
 
-  startCamera = () => {
+  initializeFaceMesh() {
 
     const faceMeshVersion = VERSION
 
-    const config = {locateFile: (file) => {
+    const config = {
+      locateFile: (file) => {
 
-      const filename = `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@` +
-                       `${faceMeshVersion}/${file}`;
-
-      console.log(filename)
-
-      return filename;
-    }}
-
+        const filename = `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@` +
+          `${faceMeshVersion}/${file}`;
+        return filename;
+      }
+    }
 
     this.faceMesh = new FaceMesh(config);
     this.faceMesh.onResults(this.onResults);
+  }
 
-    console.log("facemesh", this.faceMesh)
-    console.log("cameraref", this.cameraRef)
+  start = () => {
+
+    this.canvasElement = this.canvasRef.current
+    this.canvasCtx = this.canvasElement.getContext('2d')
 
     const camera = new Camera(this.cameraRef.current, {
       onFrame: async () => {
@@ -44,59 +47,37 @@ export default class FaceMonitor extends React.Component {
     });
 
     camera.start();
-
-
-
-    // navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
-
-    //   console.log(stream)
-
-    //   const camera = document.getElementById("camera");
-    //   console.log("camera", camera)
-
-    //   camera.srcObject = stream;
-
-    // }).catch(function () {
-    //   console.log("could not connect stream");
-    // });
   }
 
-  startOutput = () => {
+  onResults = (results) => {
 
-    // const outputContext = this.outputRef.current.getContext("2d");
-    // outputContext.drawImage(this.cameraRef.current, 0, 0);
+    this.canvasCtx.save();
+    this.canvasCtx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
 
-    // const mpFaceMesh = window;
+    // this.canvasCtx.drawImage(results.image, 0, 0, this.canvasElement.width,
+    //                          this.canvasElement.height);
 
-    // const config = {
-    //   locateFile: (file) => {
-    //     return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@` +
-    //       `${mpFaceMesh.VERSION}/${file}`;
-    //   }
-    // };
+    if (results.multiFaceLandmarks) {
 
-    // const faceMesh = new FaceMesh(config);
-    // faceMesh.onResults(this.onResults);
+      for (const landmarks of results.multiFaceLandmarks) {
+        drawConnectors(this.canvasCtx, landmarks, FACEMESH_LEFT_EYE, {color: "#FF3030"});
+        drawConnectors(this.canvasCtx, landmarks, FACEMESH_RIGHT_EYE, {color: "#30FF30"});
+      }
+    }
 
+    this.canvasCtx.restore();
   }
-
-
-  onResults = () => {
-    console.log("sefef")
-  }
-
 
   render() {
     return <div>
 
       <video id="camera" autoPlay ref={this.cameraRef}></video>
-      <canvas id="output" ref={this.outputRef}></canvas>
+      <canvas id="output" ref={this.canvasRef}></canvas>
 
-      <button onClick={this.startCamera}>camera</button>
-      {/* <button onClick={this.startOutput}>output</button> */}
+      <div>
+        <button onClick={this.start}>start</button>
+      </div>
 
     </div>
   }
-
-
 }
