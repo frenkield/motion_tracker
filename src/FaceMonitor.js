@@ -1,6 +1,6 @@
 import React from "react"
 
-import {FaceMesh} from "@mediapipe/face_mesh"
+import {FaceMesh, VERSION} from "@mediapipe/face_mesh"
 import {Camera} from '@mediapipe/camera_utils'
 
 export default class FaceMonitor extends React.Component {
@@ -16,11 +16,7 @@ export default class FaceMonitor extends React.Component {
 
   startCamera = () => {
 
-    // const mpFaceMesh = window;
-    // mpFaceMesh.VERSION
-
-
-    const faceMeshVersion = "0.4.1633559619"
+    const faceMeshVersion = VERSION
 
     const config = {locateFile: (file) => {
 
@@ -30,7 +26,7 @@ export default class FaceMonitor extends React.Component {
       console.log(filename)
 
       return filename;
-    }};
+    }}
 
 
     this.faceMesh = new FaceMesh(config);
