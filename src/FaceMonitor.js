@@ -1,6 +1,7 @@
 import React from "react"
 import {
-  FaceMesh, VERSION, FACEMESH_FACE_OVAL, FACEMESH_RIGHT_EYE, FACEMESH_LEFT_EYE
+  FaceMesh, VERSION, FACEMESH_FACE_OVAL, FACEMESH_RIGHT_EYE, FACEMESH_LEFT_EYE,
+  FACEMESH_RIGHT_IRIS, FACEMESH_LEFT_IRIS
 } from "@mediapipe/face_mesh"
 import { Camera } from "@mediapipe/camera_utils"
 import { drawConnectors } from "@mediapipe/drawing_utils"
@@ -17,7 +18,14 @@ export default class FaceMonitor extends React.Component {
     this.initializeFaceMesh()
     this.running = false
 
-    console.log("FACEMESH_LEFT_EYE", FACEMESH_LEFT_EYE)
+    // console.log("FACEMESH_LEFT_EYE", FACEMESH_LEFT_EYE)
+    console.log("FACEMESH_LEFT_IRIS", FACEMESH_LEFT_IRIS)
+    console.log("FACEMESH_RIGHT_IRIS", FACEMESH_RIGHT_IRIS)
+
+    this.leftIrisLandmarkIndex = FACEMESH_LEFT_IRIS[0][0]
+    this.rightIrisLandmarkIndex = FACEMESH_RIGHT_IRIS[1][0]
+
+    console.log(this.leftIrisLandmarkIndex, this.rightIrisLandmarkIndex)
 
   }
 
@@ -30,6 +38,14 @@ export default class FaceMonitor extends React.Component {
     }
 
     this.faceMesh = new FaceMesh(config);
+
+    this.faceMesh.setOptions({
+      maxNumFaces: 1,
+      refineLandmarks: true,
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5
+    });
+
     this.faceMesh.onResults(this.onResults);
   }
 
@@ -73,6 +89,9 @@ export default class FaceMonitor extends React.Component {
         drawConnectors(this.canvasCtx, landmarks, FACEMESH_LEFT_EYE, {color: "#FF3030"})
         drawConnectors(this.canvasCtx, landmarks, FACEMESH_RIGHT_EYE, {color: "#30FF30"})
 
+        drawConnectors(this.canvasCtx, landmarks, FACEMESH_LEFT_IRIS, {color: "white"})
+        drawConnectors(this.canvasCtx, landmarks, FACEMESH_RIGHT_IRIS, {color: "white"})
+
         // drawConnectors(canvasCtx, landmarks, FACEMESH_TESSELATION, { color: '#C0C0C070', lineWidth: 1 })
         // drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYE, { color: '#FF3030' })
         // drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYEBROW, { color: '#FF3030' })
@@ -104,7 +123,16 @@ export default class FaceMonitor extends React.Component {
       this.startTime = currentTime
       this.resultsCount = 0
 
-      console.log(results)   
+
+
+
+
+      const landmarks = results.multiFaceLandmarks[0]
+
+      const left = landmarks[this.leftIrisLandmarkIndex].z * 100
+      const right = landmarks[this.rightIrisLandmarkIndex].z * 100
+
+      console.log(left, right)
     }
   }
 
@@ -113,11 +141,6 @@ export default class FaceMonitor extends React.Component {
 
       <video id="camera" autoPlay ref={this.cameraRef}></video>
       <canvas id="output" ref={this.canvasRef}></canvas>
-
-      <div>
-        <button onClick={this.start}>start</button>
-        <button onClick={this.stop}>stop</button>
-      </div>
 
     </div>
   }
