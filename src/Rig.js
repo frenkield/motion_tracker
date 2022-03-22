@@ -1,9 +1,6 @@
 import React from "react"
 import * as THREE from "three"
 
-// https://codepen.io/mediapipe/pen/jOMbvxw?editors=1000
-// https://3d.kalidoface.com/
-
 export default class Rig extends React.Component {
 
   constructor(props) {
@@ -50,13 +47,13 @@ export default class Rig extends React.Component {
 
 
     const cube = this.cube
-
+    const headPosition = this.props.headPosition
 
 
     function animate() {
       requestAnimationFrame(animate);
 
-      // cube.position.x += 0.01
+      cube.position.x = headPosition.x * 5 - 2.5
 
       // cube.rotation.x += 0.01;
       cube.rotation.y += 0.01;

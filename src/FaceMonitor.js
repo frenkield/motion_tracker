@@ -6,6 +6,8 @@ import {
 import { Camera } from "@mediapipe/camera_utils"
 import { drawConnectors } from "@mediapipe/drawing_utils"
 
+// https://codepen.io/mediapipe/pen/jOMbvxw?editors=1000
+
 export default class FaceMonitor extends React.Component {
 
   constructor(props) {
@@ -17,16 +19,6 @@ export default class FaceMonitor extends React.Component {
 
     this.initializeFaceMesh()
     this.running = false
-
-    // console.log("FACEMESH_LEFT_EYE", FACEMESH_LEFT_EYE)
-    console.log("FACEMESH_LEFT_IRIS", FACEMESH_LEFT_IRIS)
-    console.log("FACEMESH_RIGHT_IRIS", FACEMESH_RIGHT_IRIS)
-
-    this.leftIrisLandmarkIndex = FACEMESH_LEFT_IRIS[0][0]
-    this.rightIrisLandmarkIndex = FACEMESH_RIGHT_IRIS[1][0]
-
-    console.log(this.leftIrisLandmarkIndex, this.rightIrisLandmarkIndex)
-
   }
 
   initializeFaceMesh() {
@@ -69,7 +61,8 @@ export default class FaceMonitor extends React.Component {
 
   onResults = (results) => {
 
-    this.logPerformance(results)
+    // this.logPerformance(results)
+    this.props.onResults(results)
 
     this.canvasCtx.save();
     this.canvasCtx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
@@ -122,26 +115,13 @@ export default class FaceMonitor extends React.Component {
       console.log(this.resultsCount / elapsedTime * 1000)
       this.startTime = currentTime
       this.resultsCount = 0
-
-
-
-
-
-      const landmarks = results.multiFaceLandmarks[0]
-
-      const left = landmarks[this.leftIrisLandmarkIndex].z * 100
-      const right = landmarks[this.rightIrisLandmarkIndex].z * 100
-
-      console.log(left, right)
     }
   }
 
   render() {
     return <div>
-
       <video id="camera" autoPlay ref={this.cameraRef}></video>
       <canvas id="output" ref={this.canvasRef}></canvas>
-
     </div>
   }
 }
