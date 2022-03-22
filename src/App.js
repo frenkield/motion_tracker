@@ -10,7 +10,7 @@ function App() {
   const rigRef = useRef()
   const landmarksTransformer = new LandmarksTransformer()
 
-  const headPosition = {x:0, y:0, z:0}
+  const headPosition = {x:2.5, y:2.5, z:2.5}
 
   const start = () => {
     console.log("start")
@@ -33,7 +33,7 @@ function App() {
       const landmarks = results.multiFaceLandmarks[0]
       landmarksTransformer.extractHeadPosition(landmarks, headPosition)
 
-      console.log("headPosition", headPosition)
+      // console.log("headPosition", headPosition)
     }
   }
 
@@ -45,8 +45,8 @@ function App() {
       <Rig ref={rigRef} headPosition={headPosition}/>
 
       <div>
-        <div class="simple_text">Camera video with MediaPipe FaceMesh</div>
-        <div class="simple_text">Motion translated to 3D space</div>
+        <div className="simple_text">Camera video with MediaPipe FaceMesh</div>
+        <div className="simple_text">Motion translated to 3D space</div>
       </div>
 
       <div>

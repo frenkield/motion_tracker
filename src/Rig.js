@@ -28,7 +28,6 @@ export default class Rig extends React.Component {
 
     const scene = new THREE.Scene()
 
-
     const material = new THREE.MeshPhongMaterial({
       ambient: 0x555555,
       color: 0x555555,
@@ -45,18 +44,17 @@ export default class Rig extends React.Component {
     light.position.set(20, 20, 20);
     scene.add(light);
 
-
     const cube = this.cube
     const headPosition = this.props.headPosition
 
-
     function animate() {
+
       requestAnimationFrame(animate);
 
       cube.position.x = headPosition.x * 5 - 2.5
       cube.position.y = -headPosition.y * 5 + 2.5
+      cube.position.z = Math.min(headPosition.z * 100 - 2, 3)
 
-      // cube.rotation.x += 0.01;
       cube.rotation.y += 0.01;
 
       renderer.render(scene, camera)
