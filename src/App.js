@@ -22,7 +22,6 @@ function App() {
     console.log("stop")
     faceMonitorRef.current.stop()
     headPosition.x += 0.1
-    rigRef.current.updateHeadPosition(headPosition)
   }
 
   const onFaceMonitorResults = (results) => {
@@ -44,6 +43,11 @@ function App() {
 
       <FaceMonitor ref={faceMonitorRef} onResults={onFaceMonitorResults}/>
       <Rig ref={rigRef} headPosition={headPosition}/>
+
+      <div>
+        <div class="simple_text">Camera video with MediaPipe FaceMesh</div>
+        <div class="simple_text">Motion translated to 3D space</div>
+      </div>
 
       <div>
         <button onClick={start}>start</button>

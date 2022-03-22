@@ -67,8 +67,8 @@ export default class FaceMonitor extends React.Component {
     this.canvasCtx.save();
     this.canvasCtx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
 
-    // this.canvasCtx.drawImage(results.image, 0, 0, this.canvasElement.width,
-    //                          this.canvasElement.height);
+    this.canvasCtx.drawImage(results.image, 0, 0, this.canvasElement.width,
+                             this.canvasElement.height);
 
     if (results.multiFaceLandmarks) {
 
@@ -119,9 +119,9 @@ export default class FaceMonitor extends React.Component {
   }
 
   render() {
-    return <div>
-      <video id="camera" autoPlay ref={this.cameraRef}></video>
-      <canvas id="output" ref={this.canvasRef}></canvas>
-    </div>
+    return <React.Fragment>
+        <video id="camera" autoPlay ref={this.cameraRef}></video>
+        <canvas id="output" ref={this.canvasRef}></canvas>
+      </React.Fragment>
   }
 }

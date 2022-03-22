@@ -54,6 +54,7 @@ export default class Rig extends React.Component {
       requestAnimationFrame(animate);
 
       cube.position.x = headPosition.x * 5 - 2.5
+      cube.position.y = -headPosition.y * 5 + 2.5
 
       // cube.rotation.x += 0.01;
       cube.rotation.y += 0.01;
@@ -63,10 +64,6 @@ export default class Rig extends React.Component {
 
     this.running = true
     animate()
-  }
-
-  updateHeadPosition(position) {
-    this.cube.position.x = position.x
   }
 
   render() {
