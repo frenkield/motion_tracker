@@ -20,3 +20,15 @@ npm start
 To initiate motion capture and rendering click the `start` button.
 You will then be asked to confirm access to the default camera connected
 to you camera.
+
+## Test
+```
+npm test *
+```
+
+## Screen Captures
+
+![Looking down/left](doc/down_left.png)
+![Looking down/right](doc/down_right.png)
+![Looking up/left](doc/up_left.png)
+![Looking up/right](doc/up_right.png)
