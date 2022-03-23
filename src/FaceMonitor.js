@@ -6,8 +6,6 @@ import {
 import { Camera } from "@mediapipe/camera_utils"
 import { drawConnectors } from "@mediapipe/drawing_utils"
 
-// https://codepen.io/mediapipe/pen/jOMbvxw?editors=1000
-
 export default class FaceMonitor extends React.Component {
 
   constructor(props) {
@@ -61,7 +59,6 @@ export default class FaceMonitor extends React.Component {
 
   onResults = (results) => {
 
-    // this.logPerformance(results)
     this.props.onResults(results)
 
     this.canvasCtx.save();
@@ -74,11 +71,6 @@ export default class FaceMonitor extends React.Component {
 
       for (const landmarks of results.multiFaceLandmarks) {
 
-        // if (this.resultsCount == 1) {
-        //   const faceRig = Face.solve(landmarks, {runtime:'mediapipe', video:this.cameraRef})
-        //   console.log(faceRig)
-        // }
-
         drawConnectors(this.canvasCtx, landmarks, FACEMESH_LEFT_EYE, {color: "#FF3030"})
         drawConnectors(this.canvasCtx, landmarks, FACEMESH_RIGHT_EYE, {color: "#30FF30"})
 
@@ -88,36 +80,11 @@ export default class FaceMonitor extends React.Component {
         drawConnectors(this.canvasCtx, landmarks, FACEMESH_TESSELATION,
                        {color: '#C0C0C070', lineWidth: 1})
 
-        // drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYE, { color: '#FF3030' })
-        // drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYEBROW, { color: '#FF3030' })
-        // drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYE, { color: '#30FF30' })
-        // drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYEBROW, { color: '#30FF30' })
         drawConnectors(this.canvasCtx, landmarks, FACEMESH_FACE_OVAL, { color: '#E0E0E0' })
-        // drawConnectors(canvasCtx, landmarks, FACEMESH_LIPS, { color: '#E0E0E0' })
-    
       }
     }
 
     this.canvasCtx.restore();
-  }
-
-  logPerformance(results) {
-
-    if (!this.running) {
-      this.running = true
-      this.startTime = Date.now()
-      this.resultsCount = 0
-    }
-
-    this.resultsCount++
-    const currentTime = Date.now()
-    const elapsedTime = currentTime - this.startTime
-
-    if (elapsedTime > 1000) {
-      console.log(this.resultsCount / elapsedTime * 1000)
-      this.startTime = currentTime
-      this.resultsCount = 0
-    }
   }
 
   render() {
