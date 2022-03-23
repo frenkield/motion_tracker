@@ -21,7 +21,6 @@ function App() {
   const stop = () => {
     console.log("stop")
     faceMonitorRef.current.stop()
-    headPosition.x += 0.1
   }
 
   const onFaceMonitorResults = (results) => {
@@ -31,7 +30,10 @@ function App() {
     if (results.multiFaceLandmarks) {
 
       const landmarks = results.multiFaceLandmarks[0]
-      landmarksTransformer.extractHeadPosition(landmarks, headPosition)
+
+      if (landmarks) {
+        landmarksTransformer.extractHeadPosition(landmarks, headPosition)
+      }
 
       // console.log("headPosition", headPosition)
     }
