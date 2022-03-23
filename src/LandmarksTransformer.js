@@ -1,22 +1,12 @@
-import {
-  FACEMESH_FACE_OVAL, FACEMESH_RIGHT_EYE, FACEMESH_LEFT_EYE,
-  FACEMESH_RIGHT_IRIS, FACEMESH_LEFT_IRIS
-} from "@mediapipe/face_mesh"
+import { FACEMESH_RIGHT_IRIS, FACEMESH_LEFT_IRIS } from "@mediapipe/face_mesh"
 
 export default class LandmarksTransformer {
 
   constructor() {
 
-    this.running = false
-
-    console.log("FACEMESH_LEFT_IRIS", FACEMESH_LEFT_IRIS)
-    console.log("FACEMESH_RIGHT_IRIS", FACEMESH_RIGHT_IRIS)
-
     this.leftIrisLandmarkIndex = FACEMESH_LEFT_IRIS[0][0]
     this.rightIrisLandmarkIndex = FACEMESH_RIGHT_IRIS[1][0]
     this.chinIndex = 152
-
-    // console.log(this.leftIrisLandmarkIndex, this.rightIrisLandmarkIndex)
   }
 
   extractHeadPosition = (landmarks, headPosition) => {
@@ -29,7 +19,7 @@ export default class LandmarksTransformer {
 
       headPosition.x = (leftIris.x + rightIris.x) / 2
       headPosition.y = (leftIris.y + rightIris.y) / 2
-      headPosition.z = chin.z
+      headPosition.z = (leftIris.z + rightIris.z + chin.z * 2) / 3
 
       // console.log(chin)
     }

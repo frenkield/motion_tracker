@@ -10,7 +10,7 @@ function App() {
   const rigRef = useRef()
   const landmarksTransformer = new LandmarksTransformer()
 
-  const headPosition = {x:2.5, y:2.5, z:2.5}
+  const headPosition = {x:2.5, y:2.5, z:2.5, longitude:Math.PI / 8, latitude:0}
 
   const start = () => {
     console.log("start")

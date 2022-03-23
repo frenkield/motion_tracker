@@ -55,7 +55,8 @@ export default class Rig extends React.Component {
       cube.position.y = -headPosition.y * 5 + 2.5
       cube.position.z = Math.min(headPosition.z * 100 - 2, 3)
 
-      cube.rotation.y += 0.01;
+      cube.rotation.y = headPosition.longitude
+      cube.rotation.x = headPosition.latitude
 
       renderer.render(scene, camera)
     };

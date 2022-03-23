@@ -1,7 +1,7 @@
 import React from "react"
 import {
   FaceMesh, VERSION, FACEMESH_FACE_OVAL, FACEMESH_RIGHT_EYE, FACEMESH_LEFT_EYE,
-  FACEMESH_RIGHT_IRIS, FACEMESH_LEFT_IRIS
+  FACEMESH_RIGHT_IRIS, FACEMESH_LEFT_IRIS, FACEMESH_TESSELATION,
 } from "@mediapipe/face_mesh"
 import { Camera } from "@mediapipe/camera_utils"
 import { drawConnectors } from "@mediapipe/drawing_utils"
@@ -85,7 +85,9 @@ export default class FaceMonitor extends React.Component {
         drawConnectors(this.canvasCtx, landmarks, FACEMESH_LEFT_IRIS, {color: "white"})
         drawConnectors(this.canvasCtx, landmarks, FACEMESH_RIGHT_IRIS, {color: "white"})
 
-        // drawConnectors(canvasCtx, landmarks, FACEMESH_TESSELATION, { color: '#C0C0C070', lineWidth: 1 })
+        drawConnectors(this.canvasCtx, landmarks, FACEMESH_TESSELATION,
+                       {color: '#C0C0C070', lineWidth: 1})
+
         // drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYE, { color: '#FF3030' })
         // drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYEBROW, { color: '#FF3030' })
         // drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYE, { color: '#30FF30' })
