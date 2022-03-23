@@ -36,6 +36,9 @@ export default class Rig extends React.Component {
 
   addObjectsToScene() {
 
+    this.group = new THREE.Group();
+    this.scene.add(this.group)
+
     const material = new THREE.MeshPhongMaterial({
       ambient: 0x555555,
       color: 0x555555,
@@ -45,7 +48,15 @@ export default class Rig extends React.Component {
     })
       
     this.cube = new THREE.Mesh(new THREE.BoxGeometry(), material)
-    this.scene.add(this.cube)
+    this.group.add(this.cube)
+
+    const direction = new THREE.Vector3(0, 0, 1);
+    direction.normalize();
+
+    const origin = new THREE.Vector3(0, 0, 0);
+
+    const arrowHelper = new THREE.ArrowHelper(direction, origin, 2, 0xffffff);
+    this.group.add(arrowHelper);
   }
 
   addLightsToScene() {
@@ -61,12 +72,12 @@ export default class Rig extends React.Component {
 
     const headPosition = this.props.headPosition
 
-    this.cube.position.x = headPosition.x * 5 - 2.5
-    this.cube.position.y = -headPosition.y * 5 + 2.5
-    this.cube.position.z = Math.min(headPosition.z * 100 - 2, 3)
+    this.group.position.x = headPosition.x * 5 - 2.5
+    this.group.position.y = -headPosition.y * 5 + 2.5
+    this.group.position.z = Math.min(headPosition.z * 100 - 2, 3)
 
-    this.cube.rotation.y = headPosition.longitude
-    this.cube.rotation.x = headPosition.latitude
+    this.group.rotation.y = headPosition.longitude
+    this.group.rotation.x = headPosition.latitude
 
     this.renderer.render(this.scene, this.camera)
   };
